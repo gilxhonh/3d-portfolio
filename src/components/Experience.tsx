@@ -1,9 +1,4 @@
-import {
-  ContactShadows,
-  Environment,
-  OrbitControls,
-  Sky,
-} from "@react-three/drei";
+import { ContactShadows, Environment, Sky } from "@react-three/drei";
 import { useControls } from "leva";
 import { Avatar } from "./Avatar.tsx";
 import { Office } from "./Office.tsx";
@@ -17,7 +12,6 @@ const Experience = () => {
   });
   return (
     <>
-      <OrbitControls />
       <Sky />
       <Environment preset="sunset" />
       <group position-y={-1}>
@@ -29,21 +23,16 @@ const Experience = () => {
           resolution={256}
           color="#000000"
         />
-        <Avatar animation={animation} />
+        <Avatar
+          animation={animation}
+          position-z={-0.7}
+          position-x={-0.25}
+          position-y={0.3}
+          rotation-y={9}
+        />
       </group>
-      {animation === "Typing" && (
-        <mesh scale={[0.8, 0.5, 0.8]} position-y={-0.8} position-z={-0.05}>
-          <boxGeometry />
-          <meshStandardMaterial color="white" />
-        </mesh>
-      )}
 
-      <Office />
-
-      <mesh scale={5} rotation-x={-Math.PI * 0.5} position-y={-1.001}>
-        <planeGeometry />
-        <meshStandardMaterial color="white" />
-      </mesh>
+      <Office position-y={-1.001} />
     </>
   );
 };
