@@ -33,9 +33,7 @@ type GLTFResult = GLTF & {
 
 export function Avatar(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<Group>(null);
-  const { nodes, materials } = useGLTF(
-    "models/651ca36edab353c63566a851.glb"
-  ) as GLTFResult;
+  const { nodes, materials } = useGLTF("models/avatar.glb") as GLTFResult;
 
   const { animation } = props;
 
@@ -181,4 +179,4 @@ export function Avatar(props: JSX.IntrinsicElements["group"]) {
   );
 }
 
-useGLTF.preload("models/651ca36edab353c63566a851.glb");
+useGLTF.preload("models/avatar.glb");
