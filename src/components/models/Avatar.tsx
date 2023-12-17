@@ -2,8 +2,8 @@ import * as THREE from "three";
 import { Group, Object3D } from "three";
 import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { useEffect, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import React, { useEffect, useRef } from "react";
+import { GroupProps, useFrame } from "@react-three/fiber";
 import { useControls } from "leva";
 
 type GLTFResult = GLTF & {
@@ -31,7 +31,14 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Avatar(props: JSX.IntrinsicElements["group"]) {
+interface AvatarProps extends GroupProps {
+  animation: string;
+  headFollow?: boolean;
+  cursorFollow?: boolean;
+  wireframe?: boolean;
+}
+
+export const Avatar: React.FC<AvatarProps> = (props) => {
   const group = useRef<Group>(null);
   const { nodes, materials } = useGLTF("models/avatar.glb") as GLTFResult;
 
@@ -177,6 +184,6 @@ export function Avatar(props: JSX.IntrinsicElements["group"]) {
       </group>
     </group>
   );
-}
+};
 
 useGLTF.preload("models/avatar.glb");

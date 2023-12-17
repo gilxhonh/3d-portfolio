@@ -1,7 +1,7 @@
 import { ContactShadows, Environment, Sky } from "@react-three/drei";
 import { useControls } from "leva";
-import { Avatar } from "./Avatar.tsx";
-import { Office } from "./Office.tsx";
+import { Avatar } from "./models/Avatar.tsx";
+import { Office } from "./models/Office.tsx";
 
 const Experience = () => {
   const { animation } = useControls({
@@ -31,6 +31,8 @@ const Experience = () => {
           rotation-y={9}
         />
       </group>
+
+      {/*<OrbitControls />*/}
 
       <Office position-y={-1.001} />
     </>

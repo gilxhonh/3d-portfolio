@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import React from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
@@ -89,13 +88,8 @@ type GLTFResult = GLTF & {
   };
 };
 
-type ContextType = Record<
-  string,
-  React.ForwardRefExoticComponent<JSX.IntrinsicElements["mesh"]>
->;
-
 export function Office(props: JSX.IntrinsicElements["group"]) {
-  const { nodes, materials } = useGLTF("models/scene.gltf") as GLTFResult;
+  const { nodes } = useGLTF("models/scene.gltf") as GLTFResult;
 
   const texture = useTexture("textures/baked.jpg");
   texture.flipY = false;
