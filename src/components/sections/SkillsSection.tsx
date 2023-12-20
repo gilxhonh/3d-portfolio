@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import ProgressBar from "../core/ProgressBar.tsx";
 import Section from "../core/Section.tsx";
+import ProgressBar from "../core/ProgressBar.tsx";
 
 type Skill = {
   title: string;
@@ -34,19 +34,23 @@ type SkillItemProps = {
 };
 
 const SkillItem: React.FC<SkillItemProps> = ({ skill, index }) => (
-  <div className="w-64">
-    <motion.h3
-      className="text-xl font-bold text-gray-800"
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        transition: { duration: 1, delay: 1 + index * 0.2 },
-      }}
-    >
-      {skill.title}
-    </motion.h3>
-    <ProgressBar level={skill.level} />
-  </div>
+  <>
+    <div className="w-64">
+      <motion.h3
+        className="text-xl font-bold text-gray-800"
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: 1,
+          transition: { duration: 1, delay: 1 + index * 0.2 },
+        }}
+      >
+        {skill.title}
+      </motion.h3>
+    </div>
+    <div className="h-2 w-full bg-gray-200 rounded-full mt-2">
+      <ProgressBar level={skill.level} />
+    </div>
+  </>
 );
 
 // Skills Section Component
