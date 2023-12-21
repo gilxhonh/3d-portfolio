@@ -1,19 +1,23 @@
 import { useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { gsap } from "gsap";
-import React, { useEffect, useRef } from "react";
+import React, { MutableRefObject, useEffect, useRef } from "react";
+import { ScrollControlsState } from "@react-three/drei/web/ScrollControls";
 
-// Define the type for props
 type ScrollManagerProps = {
   section: number;
   onSectionChange: (section: number) => void;
 };
 
+interface ScrollControls extends ScrollControlsState {
+  scroll: MutableRefObject<number>;
+}
+
 const ScrollManager: React.FC<ScrollManagerProps> = ({
   section,
   onSectionChange,
 }) => {
-  const data = useScroll();
+  const data = useScroll() as ScrollControls;
   const lastScroll = useRef(0);
   const isAnimating = useRef(false);
 
