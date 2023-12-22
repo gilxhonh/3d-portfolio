@@ -45,7 +45,9 @@ const Cursor: React.FC = () => {
       const target = e.target as HTMLElement;
       if (
         target.tagName.toLowerCase() === "button" ||
-        target.parentElement?.tagName.toLowerCase() === "button" ||
+        (target.parentElement?.tagName.toLowerCase() === "a" &&
+          target.parentElement?.tagName.toLowerCase() === "button") ||
+        target.tagName.toLowerCase() === "span" ||
         target.tagName.toLowerCase() === "input" ||
         target.tagName.toLowerCase() === "textarea"
       ) {
