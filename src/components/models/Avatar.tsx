@@ -53,14 +53,17 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
   const { animations: typingAnimation } = useFBX("animations/Typing.fbx");
   const { animations: bored } = useFBX("animations/Bored.fbx");
   const { animations: fallingIdle } = useFBX("animations/FallingIdle.fbx");
+  const { animations: warmingUp } = useFBX("animations/WarmingUp.fbx");
 
   typingAnimation[0].name = "Typing";
   bored[0].name = "Bored";
   fallingIdle[0].name = "FallingIdle";
+  warmingUp[0].name = "WarmingUp";
 
   const typingActions = useAnimations(typingAnimation, group);
   const boredActions = useAnimations(bored, group);
   const fallingIdleActions = useAnimations(fallingIdle, group);
+  const warmingUpActions = useAnimations(warmingUp, group);
 
   useEffect(() => {
     let currentActions = typingActions.actions;
@@ -75,6 +78,9 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
         break;
       case "FallingIdle":
         currentActions = fallingIdleActions.actions;
+        break;
+      case "WarmingUp":
+        currentActions = warmingUpActions.actions;
         break;
       default:
         // Handle default  case or unknown animations
