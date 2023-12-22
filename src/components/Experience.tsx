@@ -39,7 +39,7 @@ const Experience: React.FC<ExperienceProps> = ({ section, menuOpened }) => {
 
   return (
     <>
-      <ambientLight intensity={2} />
+      <ambientLight intensity={1} />
       <motion.group
         position={[1.5, 2, 3]}
         scale={[0.9, 0.9, 0.9]}
@@ -48,15 +48,55 @@ const Experience: React.FC<ExperienceProps> = ({ section, menuOpened }) => {
           y: section === 0 ? 0 : -1,
         }}
       >
+        <ambientLight intensity={1.5} />
         <Office section={section} />
+        <group
+          name="CharacterSpot"
+          position={[0.07, 0.24, -0.57]}
+          rotation={[-Math.PI, 0.42, -Math.PI]}
+        >
+          <Avatar animation={section === 0 ? "Typing" : "WarmingUp"} />
+        </group>
       </motion.group>
 
       {/* SKILLS */}
       <motion.group
-        position={[0, -1.5, -10]}
-        animate={{
-          z: section === 1 ? 0 : -10,
-          y: section === 1 ? -viewport.height : -1.5,
+        position={[1.9072935059634513, 0.14400000000000002, 2.681801948466054]}
+        rotation={[-3.141592653589793, 1.2053981633974482, 3.141592653589793]}
+        animate={"" + section}
+        transition={{
+          duration: 0.6,
+        }}
+        variants={{
+          0: {
+            scaleX: 0.9,
+            scaleY: 0.9,
+            scaleZ: 0.9,
+          },
+          1: {
+            x: 0,
+            z: 7,
+            rotateX: 0,
+            rotateY: 0,
+            rotateZ: 0,
+            y: -viewport.height + 0.5,
+          },
+          2: {
+            x: -2,
+            y: -viewport.height * 2 + 0.5,
+            z: 0,
+            rotateX: 0,
+            rotateY: Math.PI / 2,
+            rotateZ: 0,
+          },
+          3: {
+            y: -viewport.height * 3 + 1,
+            x: 0.3,
+            z: 8.5,
+            rotateX: 0,
+            rotateY: -Math.PI / 4,
+            rotateZ: 0,
+          },
         }}
       >
         <directionalLight position={[-5, 3, 5]} intensity={0.4} />
@@ -96,8 +136,8 @@ const Experience: React.FC<ExperienceProps> = ({ section, menuOpened }) => {
             />
           </mesh>
         </Float>
-        <group scale={[2, 2, 2]} position-y={-1.5}>
-          <Avatar animation={section === 0 ? "FallingIdle" : "Bored"} />
+        <group position-y={0.1} position-x={-0.1}>
+          <Avatar animation={section === 0 ? "Typing" : "WarmingUp"} />
         </group>
       </motion.group>
     </>

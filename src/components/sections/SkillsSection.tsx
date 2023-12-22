@@ -14,8 +14,7 @@ type Language = {
 
 // Skills and Languages Data
 const skills: Skill[] = [
-  { title: "TypeScript", level: 90 },
-  { title: "JavaScript", level: 90 },
+  { title: "JavaScript / TypeScript", level: 90 },
   { title: "React Js / React Native", level: 100 },
   { title: "Redux", level: 70 },
   { title: "Three Js / React Three Fiber", level: 45 },
