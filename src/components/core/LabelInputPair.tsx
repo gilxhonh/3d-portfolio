@@ -6,6 +6,7 @@ type LabelInputPairProps = {
   type: string;
   name: string;
   id: string;
+  autoComplete: string;
 };
 
 const LabelInputPair: React.FC<LabelInputPairProps> = ({
@@ -13,12 +14,14 @@ const LabelInputPair: React.FC<LabelInputPairProps> = ({
   type,
   name,
   id,
+  autoComplete,
 }) => (
   <>
     <label htmlFor={id} className="font-medium text-gray-900 block mb-1 mt-8">
       {label}
     </label>
     <input
+      autoComplete={autoComplete}
       type={type}
       name={name}
       id={id}
