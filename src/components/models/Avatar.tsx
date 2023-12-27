@@ -35,37 +35,44 @@ interface AvatarProps extends GroupProps {
   animation: string;
   headFollow?: boolean;
   cursorFollow?: boolean;
-  wireframe?: boolean;
+  wireframe: boolean;
 }
 
 export const Avatar: React.FC<AvatarProps> = (props) => {
   const group = useRef<Group>(null);
   const { nodes, materials } = useGLTF("models/avatar.glb") as GLTFResult;
 
-  const { animation } = props;
+  const { animation, wireframe } = props;
 
-  const { headFollow, cursorFollow, wireframe } = useControls({
+  const { headFollow, cursorFollow } = useControls({
     headFollow: false,
     cursorFollow: false,
-    wireframe: false,
   });
 
   const { animations: typingAnimation } = useFBX("animations/Typing.fbx");
   const { animations: bored } = useFBX("animations/Bored.fbx");
   const { animations: fallingIdle } = useFBX("animations/FallingIdle.fbx");
+  const { animations: warmingUp } = useFBX("animations/WarmingUp.fbx");
+  const { animations: standingUp } = useFBX("animations/StandingUp.fbx");
+  const { animations: standingIdle } = useFBX("animations/StandingIdle.fbx");
 
   typingAnimation[0].name = "Typing";
   bored[0].name = "Bored";
   fallingIdle[0].name = "FallingIdle";
+  warmingUp[0].name = "WarmingUp";
+  standingUp[0].name = "StandingUp";
+  standingIdle[0].name = "StandingIdle";
 
   const typingActions = useAnimations(typingAnimation, group);
   const boredActions = useAnimations(bored, group);
   const fallingIdleActions = useAnimations(fallingIdle, group);
+  const warmingUpActions = useAnimations(warmingUp, group);
+  const standingUpActions = useAnimations(standingUp, group);
+  const standingIdleActions = useAnimations(standingIdle, group);
 
   useEffect(() => {
     let currentActions = typingActions.actions;
 
-    // Determine which actions to use based on the current animation
     switch (animation) {
       case "Typing":
         currentActions = typingActions.actions;
@@ -76,15 +83,23 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
       case "FallingIdle":
         currentActions = fallingIdleActions.actions;
         break;
+      case "WarmingUp":
+        currentActions = warmingUpActions.actions;
+        break;
+      case "StandingUp":
+        currentActions = standingUpActions.actions;
+        break;
+      case "StandingIdle":
+        currentActions = standingIdleActions.actions;
+        break;
       default:
         // Handle default  case or unknown animations
         console.warn("Unknown animation:", animation);
         return;
     }
 
-    // Play the current animation
     if (currentActions && currentActions[animation]) {
-      currentActions[animation]!.reset().fadeIn(0.5).play();
+      currentActions[animation]!.reset().fadeIn(0.1).play();
     }
 
     // Cleanup function to stop the animation when the component unmounts or animation changes
@@ -94,10 +109,13 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
       }
     };
   }, [
-    animation,
     typingActions.actions,
     boredActions.actions,
     fallingIdleActions.actions,
+    animation,
+    warmingUpActions.actions,
+    standingUpActions.actions,
+    standingIdleActions.actions,
   ]);
 
   useEffect(() => {
@@ -126,6 +144,7 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
         <primitive object={nodes.Hips} />
         <skinnedMesh
           name="EyeLeft"
+          frustumCulled={false}
           geometry={nodes.EyeLeft.geometry}
           material={materials.Wolf3D_Eye}
           skeleton={nodes.EyeLeft.skeleton}
@@ -134,6 +153,7 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
         />
         <skinnedMesh
           name="EyeRight"
+          frustumCulled={false}
           geometry={nodes.EyeRight.geometry}
           material={materials.Wolf3D_Eye}
           skeleton={nodes.EyeRight.skeleton}
@@ -142,6 +162,7 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
         />
         <skinnedMesh
           name="Wolf3D_Head"
+          frustumCulled={false}
           geometry={nodes.Wolf3D_Head.geometry}
           material={materials.Wolf3D_Skin}
           skeleton={nodes.Wolf3D_Head.skeleton}
@@ -150,6 +171,7 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
         />
         <skinnedMesh
           name="Wolf3D_Teeth"
+          frustumCulled={false}
           geometry={nodes.Wolf3D_Teeth.geometry}
           material={materials.Wolf3D_Teeth}
           skeleton={nodes.Wolf3D_Teeth.skeleton}
@@ -157,26 +179,31 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
           morphTargetInfluences={nodes.Wolf3D_Teeth.morphTargetInfluences}
         />
         <skinnedMesh
+          frustumCulled={false}
           geometry={nodes.Wolf3D_Body.geometry}
           material={materials.Wolf3D_Body}
           skeleton={nodes.Wolf3D_Body.skeleton}
         />
         <skinnedMesh
+          frustumCulled={false}
           geometry={nodes.Wolf3D_Outfit_Bottom.geometry}
           material={materials.Wolf3D_Outfit_Bottom}
           skeleton={nodes.Wolf3D_Outfit_Bottom.skeleton}
         />
         <skinnedMesh
+          frustumCulled={false}
           geometry={nodes.Wolf3D_Outfit_Footwear.geometry}
           material={materials.Wolf3D_Outfit_Footwear}
           skeleton={nodes.Wolf3D_Outfit_Footwear.skeleton}
         />
         <skinnedMesh
+          frustumCulled={false}
           geometry={nodes.Wolf3D_Outfit_Top.geometry}
           material={materials.Wolf3D_Outfit_Top}
           skeleton={nodes.Wolf3D_Outfit_Top.skeleton}
         />
         <skinnedMesh
+          frustumCulled={false}
           geometry={nodes.Wolf3D_Hair.geometry}
           material={materials.Wolf3D_Hair}
           skeleton={nodes.Wolf3D_Hair.skeleton}

@@ -9,7 +9,7 @@ type ScrollManagerProps = {
   onSectionChange: (section: number) => void;
 };
 
-interface ScrollControls extends ScrollControlsState {
+export interface ScrollControls extends ScrollControlsState {
   scroll: MutableRefObject<number>;
 }
 
