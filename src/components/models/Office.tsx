@@ -1,4 +1,4 @@
-import { useGLTF, useTexture } from "@react-three/drei";
+import { useGLTF, useTexture, useVideoTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { animate, useMotionValue } from "framer-motion";
 import { motion } from "framer-motion-3d";
@@ -29,6 +29,7 @@ type GLTFResult = GLTF & {
     mesh425587018_1: THREE.Mesh;
     mesh425587018_2: THREE.Mesh;
     mesh425587018_3: THREE.Mesh;
+    Screen: THREE.Mesh;
     iMac_1: THREE.Mesh;
     iMac_1_1: THREE.Mesh;
     iMac_1_2: THREE.Mesh;
@@ -101,6 +102,8 @@ export const Office: React.FC<AvatarProps> = (props) => {
 
   const { nodes } = useGLTF("models/scene.gltf") as GLTFResult;
 
+  const textureVSCode = useVideoTexture("textures/vscode.mp4");
+
   const texture = useTexture("textures/baked.jpg");
   texture.flipY = false;
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -121,8 +124,12 @@ export const Office: React.FC<AvatarProps> = (props) => {
   const glassTextureOpacity = useMotionValue(0);
 
   useEffect(() => {
-    animate(textureOpacity, section === 0 ? 1 : 0);
-    animate(glassTextureOpacity, section === 0 ? 0.42 : 0);
+    animate(textureOpacity, section === 0 ? 1 : 0, {
+      duration: 0.8,
+    });
+    animate(glassTextureOpacity, section === 0 ? 0.42 : 0, {
+      duration: 0.8,
+    });
   }, [glassTextureOpacity, section, textureOpacity]);
 
   useFrame(() => {
@@ -132,6 +139,14 @@ export const Office: React.FC<AvatarProps> = (props) => {
 
   return (
     <group {...props} dispose={null}>
+      <mesh
+        name="Screen"
+        geometry={nodes.Screen.geometry}
+        position={[0.45, 0.94, -1.72]}
+        rotation={[Math.PI, -1.1, Math.PI]}
+      >
+        <meshBasicMaterial map={textureVSCode} toneMapped={false} />
+      </mesh>
       <group
         name="Desk"
         position={[-0.07, 0, -1.52]}
@@ -286,11 +301,6 @@ export const Office: React.FC<AvatarProps> = (props) => {
         rotation={[Math.PI, -1.1, Math.PI]}
       >
         <mesh
-          name="iMac_1"
-          geometry={nodes.iMac_1.geometry}
-          material={textureMaterial}
-        />
-        <mesh
           name="iMac_1_1"
           geometry={nodes.iMac_1_1.geometry}
           material={textureMaterial}
@@ -305,7 +315,7 @@ export const Office: React.FC<AvatarProps> = (props) => {
         name="Comp_Mouse"
         geometry={nodes.Comp_Mouse.geometry}
         material={textureMaterial}
-        // position={[0.45, 0.94, -1.72]}
+        position={[-0.01, 0, 0.08]}
       />
       <motion.group
         scale={[0, 0, 0]}

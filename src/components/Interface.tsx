@@ -2,15 +2,17 @@ import React from "react";
 import ContactSection from "./sections/ContactSection.tsx";
 import AboutSection from "./sections/AboutSection.tsx";
 import SkillsSection from "./sections/SkillsSection.tsx";
-import Section from "./core/Section.tsx";
+import ProjectsSection from "./sections/ProjectsSection.tsx";
 
-const Interface: React.FC = () => (
+interface InterfaceProps {
+  setSection: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Interface: React.FC<InterfaceProps> = ({ setSection }) => (
   <div className={`flex flex-col items-center w-screen`}>
-    <AboutSection />
+    <AboutSection setSection={setSection} />
     <SkillsSection />
-    <Section>
-      <div>Projects</div>
-    </Section>
+    <ProjectsSection />
     <ContactSection />
   </div>
 );

@@ -5,7 +5,11 @@ import Name from "../core/Name.tsx";
 import MainButton from "../core/MainButton.tsx";
 import { motion } from "framer-motion";
 
-const AboutSection: React.FC = () => (
+interface AboutSectionProps {
+  setSection: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const AboutSection: React.FC<AboutSectionProps> = ({ setSection }) => (
   <Section>
     <motion.h1 className="text-6xl font-extrabold leading-snug">
       Hi, I'm
@@ -24,7 +28,7 @@ const AboutSection: React.FC = () => (
       <br />
       enhance their digital presence.
     </motion.p>
-    <MainButton title="Contact Me" />
+    <MainButton onClick={() => setSection(3)} title="Contact Me" />
   </Section>
 );
 

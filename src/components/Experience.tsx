@@ -1,24 +1,35 @@
-import React, { useEffect } from "react";
+import React, { MutableRefObject, useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { animate, useMotionValue } from "framer-motion";
 import {
   Float,
   MeshDistortMaterial,
   MeshWobbleMaterial,
+  useScroll,
 } from "@react-three/drei";
 import { framerMotionConfig } from "../utils/config";
 import { motion } from "framer-motion-3d";
 
 import { Avatar } from "./models/Avatar";
 import { Office } from "./models/Office";
+import { ScrollControlsState } from "@react-three/drei/web/ScrollControls";
+import { Projects } from "./Projects.tsx";
+import { Background } from "./core/Background.tsx";
 
 interface ExperienceProps {
   section: number;
   menuOpened: boolean;
 }
 
-const Experience: React.FC<ExperienceProps> = ({ section, menuOpened }) => {
+interface ScrollControls extends ScrollControlsState {
+  scroll: MutableRefObject<number>;
+}
+
+const Experience: React.FC<ExperienceProps> = ({ menuOpened }) => {
   const { viewport } = useThree();
+
+  const data = useScroll() as ScrollControls;
+  const [section, setSection] = useState(0);
 
   const cameraPositionX = useMotionValue<number>(0);
   const cameraLookAtX = useMotionValue<number>(0);
@@ -32,14 +43,35 @@ const Experience: React.FC<ExperienceProps> = ({ section, menuOpened }) => {
     });
   }, [cameraPositionX, cameraLookAtX, menuOpened]);
 
+  const [characterAnimation, setCharacterAnimation] = useState("Typing");
+
+  useEffect(() => {
+    setCharacterAnimation("FallingIdle");
+    setTimeout(() => {
+      setCharacterAnimation(
+        section === 0 ? "Typing" : section === 1 ? "WarmingUp" : "StandingIdle"
+      );
+    }, 600);
+  }, [section]);
+
   useFrame((state) => {
+    let curSection = Math.floor(data.scroll.current * data.pages);
+
+    if (curSection > 3) {
+      curSection = 3;
+    }
+
+    if (curSection !== section) {
+      setSection(curSection);
+    }
+
     state.camera.position.x = cameraPositionX.get();
     state.camera.lookAt(cameraLookAtX.get(), 0, 0);
   });
 
   return (
     <>
-      <ambientLight intensity={1} />
+      <Background />
       <motion.group
         position={[1.5, 2, 3]}
         scale={[0.9, 0.9, 0.9]}
@@ -50,13 +82,6 @@ const Experience: React.FC<ExperienceProps> = ({ section, menuOpened }) => {
       >
         <ambientLight intensity={1.5} />
         <Office section={section} />
-        <group
-          name="CharacterSpot"
-          position={[0.07, 0.24, -0.57]}
-          rotation={[-Math.PI, 0.42, -Math.PI]}
-        >
-          <Avatar animation={section === 0 ? "Typing" : "WarmingUp"} />
-        </group>
       </motion.group>
 
       {/* SKILLS */}
@@ -137,9 +162,10 @@ const Experience: React.FC<ExperienceProps> = ({ section, menuOpened }) => {
           </mesh>
         </Float>
         <group position-y={0.1} position-x={-0.1}>
-          <Avatar animation={section === 0 ? "Typing" : "WarmingUp"} />
+          <Avatar animation={characterAnimation} />
         </group>
       </motion.group>
+      <Projects />
     </>
   );
 };

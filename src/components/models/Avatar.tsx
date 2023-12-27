@@ -74,7 +74,6 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
   useEffect(() => {
     let currentActions = typingActions.actions;
 
-    // Determine which actions to use based on the current animation
     switch (animation) {
       case "Typing":
         currentActions = typingActions.actions;
@@ -116,6 +115,8 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
     fallingIdleActions.actions,
     animation,
     warmingUpActions.actions,
+    standingUpActions.actions,
+    standingIdleActions.actions,
   ]);
 
   useEffect(() => {

@@ -30,12 +30,12 @@ const SkillsSection: React.FC = () => {
   return (
     <Section>
       <motion.div whileInView={"visible"}>
-        <h2 className="text-5xl font-bold">Skills</h2>
+        <h2 className="text-5xl font-bold text-white">Skills</h2>
         <div className=" mt-8 space-y-4">
           {skills.map((skill, index) => (
             <div className="w-64" key={index}>
               <motion.h3
-                className="text-xl font-bold text-gray-800"
+                className="text-xl font-bold text-gray-100"
                 initial={{
                   opacity: 0,
                 }}
@@ -74,12 +74,12 @@ const SkillsSection: React.FC = () => {
           ))}
         </div>
         <div>
-          <h2 className="text-5xl font-bold mt-10">Languages</h2>
+          <h2 className="text-5xl font-bold mt-10 text-white">Languages</h2>
           <div className=" mt-8 space-y-4">
             {languages.map((lng, index) => (
               <div className="w-64" key={index}>
                 <motion.h3
-                  className="text-xl font-bold text-gray-800"
+                  className="text-xl font-bold text-gray-100"
                   initial={{
                     opacity: 0,
                   }}
