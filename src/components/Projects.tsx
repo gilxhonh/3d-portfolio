@@ -17,34 +17,37 @@ interface Project {
 
 export const projects: Project[] = [
   {
-    title: "AI Post Generator",
+    title: "NFT Marketplace",
+    url: "https://github.com/Gilxhon001/NFT-Marketplace",
+    image: "projects/web3.png",
+    description: "Build a NFT Marketplace with ICP Blockchain and React.Js",
+  },
+  {
+    title: "Blog Standard",
     url: "https://ai-blog-post-generator-nine.vercel.app/",
-    image: "projects/wawatmos.jpg",
-    description: "Recreating the Atmos Awwwards website with React Three Fiber",
+    image: "projects/blogpost.png",
+    description:
+      "Build an AI Blog post generator using OpenAI's GPT, with Next.Js",
+  },
+  {
+    title: "ENGAGEathon",
+    url: "https://www.engageathon.com/",
+    image: "projects/cover.png",
+    description:
+      "Software the measures engagement for corporations, government, nonprofits and universities",
   },
   {
     title: "3D Portfolio",
     url: "https://gilxhon.com",
-    image: "projects/baking.jpg",
-    description: "Build a 3D portfolio using Three js",
+    image: "projects/3dportfolio.png",
+    description: "Build a 3D portfolio using Three js and React.Js",
   },
   {
-    title: "NFT Marketplace",
-    url: "https://github.com/Gilxhon001/NFT-Marketplace",
-    image: "projects/avatar.jpg",
-    description: "Build a NFT Marketplace ICP Blockchain",
-  },
-  {
-    title: "Kanagame",
-    url: "https://www.youtube.com/watch?v=zwNF1-lsia8",
-    image: "projects/kanagame.jpg",
-    description: "Use React Three Fiber to create a 3D game",
-  },
-  {
-    title: "Loader",
-    url: "https://www.youtube.com/watch?v=L12wIvuZTOY",
-    image: "projects/loader.jpg",
-    description: "Create a loading screen for your r3f projects",
+    title: "Favorite Places",
+    url: "https://github.com/Gilxhon001/ReactNative-FavoritePlaces",
+    image: "projects/favorite-places.jpg",
+    description:
+      "Build a mobile App to save your favorite places with React Native",
   },
 ];
 

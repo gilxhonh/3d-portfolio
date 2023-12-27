@@ -63,7 +63,11 @@ const ContactSection: React.FC = () => {
                 className="mt-1 text-red-500"
                 errors={state.errors}
               />
-              <button type="submit" disabled={state.submitting}>
+              <button
+                className="mt-10"
+                type="submit"
+                disabled={state.submitting}
+              >
                 <MainButton title="Submit" />
               </button>
             </form>

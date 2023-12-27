@@ -10,7 +10,7 @@ interface AboutSectionProps {
 }
 
 const AboutSection: React.FC<AboutSectionProps> = ({ setSection }) => (
-  <Section>
+  <Section mobileTop>
     <motion.h1 className="text-6xl font-extrabold leading-snug">
       Hi, I'm
       <br />
@@ -19,7 +19,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ setSection }) => (
       </div>
     </motion.h1>
     <motion.p
-      className="text-lg text-gray-600 mt-4"
+      className="text-lg text-gray-600 mt-4 mb-16"
       initial={{ opacity: 0, y: 25 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, delay: 1 }}

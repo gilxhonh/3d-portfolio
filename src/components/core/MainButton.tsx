@@ -11,7 +11,7 @@ const MainButton: React.FC<MainButtonProps> = (props) => {
   return (
     <motion.a
       href="#_"
-      className="relative inline-block text-lg group mt-16"
+      className="relative inline-block text-lg group"
       initial={{
         opacity: 0,
         y: 25,
