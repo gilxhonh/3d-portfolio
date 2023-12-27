@@ -9,10 +9,12 @@ import { MotionConfig } from "framer-motion";
 import { framerMotionConfig } from "./utils/config.ts";
 import Cursor from "./components/Cursor.tsx";
 import { Leva } from "leva";
+import { LoadingScreen } from "./components/LoadingScreen.tsx";
 
 function App() {
   const [section, setSection] = useState(0);
   const [menuOpened, setMenuOpened] = useState(false);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
     setMenuOpened(false);
@@ -20,6 +22,8 @@ function App() {
 
   return (
     <>
+      <LoadingScreen started={started} setStarted={setStarted} />
+
       <MotionConfig
         transition={{
           ...framerMotionConfig,
