@@ -117,6 +117,7 @@ export const currentProjectAtom = atom(Math.floor(projects.length / 2));
 export const Projects = () => {
   const { viewport } = useThree();
   const [currentProject] = useAtom(currentProjectAtom);
+  const scaleFactor = 1;
 
   return (
     <group position-y={-viewport.height * 2 + 1}>
@@ -130,6 +131,7 @@ export const Projects = () => {
             z: currentProject === index ? -2 : -3,
             rotateX: currentProject === index ? 0 : -Math.PI / 3,
             rotateZ: currentProject === index ? 0 : -0.1 * Math.PI,
+            scale: currentProject === index ? scaleFactor : 1,
           }}
         >
           <Project project={project} highlighted={index === currentProject} />

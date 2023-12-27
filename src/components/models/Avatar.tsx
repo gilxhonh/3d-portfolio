@@ -35,19 +35,18 @@ interface AvatarProps extends GroupProps {
   animation: string;
   headFollow?: boolean;
   cursorFollow?: boolean;
-  wireframe?: boolean;
+  wireframe: boolean;
 }
 
 export const Avatar: React.FC<AvatarProps> = (props) => {
   const group = useRef<Group>(null);
   const { nodes, materials } = useGLTF("models/avatar.glb") as GLTFResult;
 
-  const { animation } = props;
+  const { animation, wireframe } = props;
 
-  const { headFollow, cursorFollow, wireframe } = useControls({
+  const { headFollow, cursorFollow } = useControls({
     headFollow: false,
     cursorFollow: false,
-    wireframe: false,
   });
 
   const { animations: typingAnimation } = useFBX("animations/Typing.fbx");
