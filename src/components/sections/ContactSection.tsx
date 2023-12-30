@@ -2,6 +2,9 @@
 import React from "react";
 import Section from "../core/Section.tsx";
 import MainButton from "../core/MainButton.tsx";
+import LinkedInLogo from "../../assets/linkedin.svg";
+import { motion } from "framer-motion";
+
 import { useForm, ValidationError } from "@formspree/react";
 
 const ContactSection: React.FC = () => {
@@ -63,13 +66,36 @@ const ContactSection: React.FC = () => {
                 className="mt-1 text-red-500"
                 errors={state.errors}
               />
-              <button
-                className="mt-10"
-                type="submit"
-                disabled={state.submitting}
-              >
-                <MainButton title="Submit" />
-              </button>
+              <div className="mt-10 flex justify-between items-center w-full">
+                <button type="submit" disabled={state.submitting}>
+                  <MainButton title="Submit" />
+                </button>
+
+                <motion.a
+                  href="https://www.linkedin.com/in/gilxhon-hima/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{
+                    opacity: 0,
+                    y: 25,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 1,
+                  }}
+                >
+                  Or reach me on
+                  <img
+                    src={LinkedInLogo}
+                    alt="LinkedIn"
+                    className="inline-block ml-2"
+                  />
+                </motion.a>
+              </div>
             </form>
           )}
         </div>
