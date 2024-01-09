@@ -134,7 +134,11 @@ const Experience: React.FC<ExperienceProps> = ({ menuOpened }) => {
           },
         }}
       >
-        <Avatar animation={characterAnimation} wireframe={false} />
+        <Avatar
+          animation={characterAnimation}
+          wireframe={false}
+          position-y={0.07}
+        />
       </motion.group>
       <ambientLight intensity={2} />
       <motion.group
