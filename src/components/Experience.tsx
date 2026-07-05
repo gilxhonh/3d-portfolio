@@ -14,7 +14,7 @@ import { Office } from "./models/Office";
 import { Projects } from "./Projects.tsx";
 import { Background } from "./core/Background.tsx";
 import { ScrollControls } from "../utils/ScrollManager.tsx";
-import { Vector3 } from "three";
+import { Group, Vector3 } from "three";
 
 interface ExperienceProps {
   section: number;
@@ -43,7 +43,7 @@ const Experience: React.FC<ExperienceProps> = ({ menuOpened }) => {
     });
   }, [menuOpened]);
 
-  const characterContainerAboutRef = useRef<THREE.Group>(null);
+  const characterContainerAboutRef = useRef<Group>(null);
 
   const [characterAnimation, setCharacterAnimation] = useState("Typing");
   useEffect(() => {

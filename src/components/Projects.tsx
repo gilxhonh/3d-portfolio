@@ -17,37 +17,45 @@ interface Project {
 
 export const projects: Project[] = [
   {
-    title: "NFT Marketplace",
-    url: "https://github.com/Gilxhon001/NFT-Marketplace",
-    image: "projects/web3.png",
-    description: "Build a NFT Marketplace with ICP Blockchain and React.Js",
+    title: "Blingual",
+    url: "https://blingu.al/",
+    image: "projects/blingual.png",
+    description:
+      "E-commerce store serving Albania & Kosovo — electronics, accessories and more",
   },
   {
-    title: "Blog Standard",
-    url: "https://ai-blog-post-generator-nine.vercel.app/",
-    image: "projects/blogpost.png",
+    title: "Excel Merger",
+    url: "https://excel-merger-client.vercel.app/",
+    image: "projects/excel-merger.png",
     description:
-      "Build an AI Blog post generator using OpenAI's GPT, with Next.Js",
+      "Web app that merges multiple Excel spreadsheets into a single consolidated file",
   },
   {
     title: "ENGAGEathon",
     url: "https://www.engageathon.com/",
     image: "projects/cover.png",
     description:
-      "Software the measures engagement for corporations, government, nonprofits and universities",
+      "Engagement measurement platform for corporations, government, nonprofits and universities",
   },
   {
     title: "3D Portfolio",
     url: "https://gilxhon.com",
     image: "projects/3dportfolio.png",
-    description: "Build a 3D portfolio using Three js and React.Js",
+    description:
+      "This interactive 3D portfolio, built with Three.js and React",
   },
   {
-    title: "Favorite Places",
-    url: "https://github.com/Gilxhon001/ReactNative-FavoritePlaces",
-    image: "projects/favorite-places.jpg",
+    title: "Blog Standard",
+    url: "https://ai-blog-post-generator-nine.vercel.app/",
+    image: "projects/blogpost.png",
     description:
-      "Build a mobile App to save your favorite places with React Native",
+      "AI blog post generator powered by OpenAI GPT, built with Next.js",
+  },
+  {
+    title: "NFT Marketplace",
+    url: "https://github.com/Gilxhon001/NFT-Marketplace",
+    image: "projects/web3.png",
+    description: "NFT marketplace built on the ICP blockchain with React",
   },
 ];
 
