@@ -155,16 +155,16 @@ export const currentProjectAtom = atom(Math.floor(projects.length / 2));
 export const Projects = () => {
   const { viewport } = useThree();
   const [currentProject] = useAtom(currentProjectAtom);
-  const scaleFactor = 1;
+  const scaleFactor = 1.25;
 
   return (
     <group position-y={-viewport.height * 2 + 1}>
       {projects.map((project, index) => (
         <motion.group
           key={"project_" + index}
-          position={[index * 2.5, 0, -3]}
+          position={[index * 2.8, 0, -3]}
           animate={{
-            x: (index - currentProject) * 2.5,
+            x: (index - currentProject) * 2.8,
             y: currentProject === index ? 0 : -0.1,
             z: currentProject === index ? -2 : -3,
             rotateX: currentProject === index ? 0 : -Math.PI / 3,
