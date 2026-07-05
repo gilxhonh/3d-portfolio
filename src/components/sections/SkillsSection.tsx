@@ -16,9 +16,13 @@ type Language = {
 const skills: Skill[] = [
   { title: "JavaScript / TypeScript", level: 90 },
   { title: "React Js / React Native", level: 90 },
-  { title: "Redux", level: 90 },
-  { title: "Three Js / React Three Fiber", level: 60 },
-  { title: "PixiJs", level: 60 },
+  { title: "Next.js", level: 85 },
+  { title: "Node.js", level: 85 },
+  { title: "Java / Spring Boot", level: 80 },
+  { title: "SQL / PostgreSQL", level: 80 },
+  { title: "Docker", level: 75 },
+  { title: "AWS / Cloud", level: 70 },
+  { title: "Three Js / React Three Fiber", level: 65 },
 ];
 
 const languages: Language[] = [
@@ -31,7 +35,7 @@ const SkillsSection: React.FC = () => {
     <Section>
       <motion.div whileInView={"visible"}>
         <h2 className="text-5xl font-bold text-white">Skills</h2>
-        <div className=" mt-8 space-y-4">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-12">
           {skills.map((skill, index) => (
             <div className="w-64" key={index}>
               <motion.h3
@@ -44,7 +48,7 @@ const SkillsSection: React.FC = () => {
                     opacity: 1,
                     transition: {
                       duration: 1,
-                      delay: 1 + index * 0.2,
+                      delay: 1 + index * 0.1,
                     },
                   },
                 }}
@@ -64,7 +68,7 @@ const SkillsSection: React.FC = () => {
                       scaleX: 1,
                       transition: {
                         duration: 1,
-                        delay: 1 + index * 0.2,
+                        delay: 1 + index * 0.1,
                       },
                     },
                   }}
