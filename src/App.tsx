@@ -30,7 +30,7 @@ function App() {
       >
         <Canvas
           camera={{ position: [0, 3, 10], fov: 42 }}
-          dpr={[1, 1.5]}
+          dpr={[1, 2]}
           gl={{ powerPreference: "high-performance", antialias: true }}
         >
           <color attach="background" args={["#e6e7ff"]} />
