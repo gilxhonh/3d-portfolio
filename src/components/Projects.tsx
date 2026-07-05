@@ -13,6 +13,8 @@ interface Project {
   url: string;
   image: string;
   description: string;
+  tech: string[];
+  linkType: "live" | "code";
 }
 
 export const projects: Project[] = [
@@ -21,41 +23,50 @@ export const projects: Project[] = [
     url: "https://blingu.al/",
     image: "projects/blingual.png",
     description:
-      "E-commerce store serving Albania & Kosovo — electronics, accessories and more",
+      "E-commerce store serving Albania & Kosovo — electronics and more",
+    tech: ["Shopify", "Liquid", "E-commerce"],
+    linkType: "live",
   },
   {
     title: "Excel Merger",
     url: "https://excel-merger-client.vercel.app/",
     image: "projects/excel-merger.png",
-    description:
-      "Web app that merges multiple Excel spreadsheets into a single consolidated file",
+    description: "Merges multiple Excel spreadsheets into one file",
+    tech: ["React", "Node.js", "SheetJS"],
+    linkType: "live",
   },
   {
     title: "ENGAGEathon",
     url: "https://www.engageathon.com/",
     image: "projects/cover.png",
     description:
-      "Engagement measurement platform for corporations, government, nonprofits and universities",
+      "Engagement platform for corporations, nonprofits and universities",
+    tech: ["React", "TypeScript", "Node.js"],
+    linkType: "live",
   },
   {
     title: "3D Portfolio",
     url: "https://gilxhon.com",
     image: "projects/3dportfolio.png",
-    description:
-      "This interactive 3D portfolio, built with Three.js and React",
+    description: "This interactive 3D portfolio",
+    tech: ["Three.js", "R3F", "TypeScript"],
+    linkType: "live",
   },
   {
     title: "Blog Standard",
     url: "https://ai-blog-post-generator-nine.vercel.app/",
     image: "projects/blogpost.png",
-    description:
-      "AI blog post generator powered by OpenAI GPT, built with Next.js",
+    description: "AI blog post generator powered by OpenAI GPT",
+    tech: ["Next.js", "OpenAI API"],
+    linkType: "live",
   },
   {
     title: "NFT Marketplace",
     url: "https://github.com/Gilxhon001/NFT-Marketplace",
     image: "projects/web3.png",
-    description: "NFT marketplace built on the ICP blockchain with React",
+    description: "NFT marketplace built on the ICP blockchain",
+    tech: ["React", "ICP", "Web3"],
+    linkType: "code",
   },
 ];
 
@@ -96,25 +107,44 @@ const Project: React.FC<ProjectProps> = (props) => {
         scale={[2, 1.2]}
         url={project.image}
         toneMapped={false}
-        position-y={0.3}
+        position-y={0.35}
       />
       <Text
-        maxWidth={2}
+        maxWidth={1.6}
         anchorX={"left"}
         anchorY={"top"}
-        fontSize={0.2}
-        position={[-1, -0.4, 0]}
+        fontSize={0.18}
+        position={[-1, -0.35, 0]}
       >
         {project.title.toUpperCase()}
+      </Text>
+      <Text
+        anchorX="right"
+        anchorY="top"
+        fontSize={0.09}
+        color="#a5b4fc"
+        position={[1, -0.38, 0]}
+      >
+        {project.linkType === "live" ? "LIVE ↗" : "CODE ↗"}
       </Text>
       <Text
         maxWidth={2}
         anchorX="left"
         anchorY="top"
-        fontSize={0.1}
-        position={[-1, -0.6, 0]}
+        fontSize={0.095}
+        position={[-1, -0.58, 0]}
       >
         {project.description}
+      </Text>
+      <Text
+        maxWidth={2}
+        anchorX="left"
+        anchorY="top"
+        fontSize={0.085}
+        color="#a5b4fc"
+        position={[-1, -0.86, 0]}
+      >
+        {project.tech.join("  ·  ")}
       </Text>
     </group>
   );

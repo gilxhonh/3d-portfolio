@@ -7,8 +7,8 @@ import { Menu } from "./components/Menu.tsx";
 import { MotionConfig } from "framer-motion";
 import { framerMotionConfig } from "./utils/config.ts";
 import Cursor from "./components/Cursor.tsx";
-import { Leva } from "leva";
 import { LoadingScreen } from "./components/LoadingScreen.tsx";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import Interface from "./components/Interface.tsx";
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
         />
         <Cursor />
       </MotionConfig>
-      <Leva hidden />
+      <SpeedInsights />
     </>
   );
 }

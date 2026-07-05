@@ -4,7 +4,6 @@ import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import React, { useEffect, useRef } from "react";
 import { GroupProps, useFrame } from "@react-three/fiber";
-import { useControls } from "leva";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -42,12 +41,8 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
   const group = useRef<Group>(null);
   const { nodes, materials } = useGLTF("models/avatar.glb") as GLTFResult;
 
-  const { animation, wireframe } = props;
-
-  const { headFollow, cursorFollow } = useControls({
-    headFollow: false,
-    cursorFollow: false,
-  });
+  const { animation, wireframe, headFollow = false, cursorFollow = false } =
+    props;
 
   const { animations: typingAnimation } = useFBX("animations/Typing.fbx");
   const { animations: bored } = useFBX("animations/Bored.fbx");
