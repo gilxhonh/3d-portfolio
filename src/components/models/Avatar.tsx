@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Group, Object3D } from "three";
-import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
+import { useAnimations, useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import React, { useEffect, useRef } from "react";
 import { GroupProps, useFrame } from "@react-three/fiber";
@@ -44,12 +44,12 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
   const { animation, wireframe, headFollow = false, cursorFollow = false } =
     props;
 
-  const { animations: typingAnimation } = useFBX("animations/Typing.fbx");
-  const { animations: bored } = useFBX("animations/Bored.fbx");
-  const { animations: fallingIdle } = useFBX("animations/FallingIdle.fbx");
-  const { animations: warmingUp } = useFBX("animations/WarmingUp.fbx");
-  const { animations: standingUp } = useFBX("animations/StandingUp.fbx");
-  const { animations: standingIdle } = useFBX("animations/StandingIdle.fbx");
+  const { animations: typingAnimation } = useGLTF("animations/Typing.glb");
+  const { animations: bored } = useGLTF("animations/Bored.glb");
+  const { animations: fallingIdle } = useGLTF("animations/FallingIdle.glb");
+  const { animations: warmingUp } = useGLTF("animations/WarmingUp.glb");
+  const { animations: standingUp } = useGLTF("animations/StandingUp.glb");
+  const { animations: standingIdle } = useGLTF("animations/StandingIdle.glb");
 
   typingAnimation[0].name = "Typing";
   bored[0].name = "Bored";
@@ -209,3 +209,9 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
 };
 
 useGLTF.preload("models/avatar.glb");
+useGLTF.preload("animations/Typing.glb");
+useGLTF.preload("animations/Bored.glb");
+useGLTF.preload("animations/FallingIdle.glb");
+useGLTF.preload("animations/WarmingUp.glb");
+useGLTF.preload("animations/StandingUp.glb");
+useGLTF.preload("animations/StandingIdle.glb");
