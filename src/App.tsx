@@ -37,10 +37,8 @@ function App() {
           <ScrollControls pages={4} damping={0.1}>
             <ScrollManager section={section} onSectionChange={setSection} />
             <Scroll>
-              <Suspense>
-                {started && (
-                  <Experience section={section} menuOpened={menuOpened} />
-                )}
+              <Suspense fallback={null}>
+                <Experience section={section} menuOpened={menuOpened} />
               </Suspense>
             </Scroll>
             <Scroll html>
