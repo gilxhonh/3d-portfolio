@@ -48,11 +48,14 @@ const Experience: React.FC<ExperienceProps> = ({ menuOpened }) => {
   const [characterAnimation, setCharacterAnimation] = useState("Typing");
   useEffect(() => {
     setCharacterAnimation("FallingIdle");
-    setTimeout(() => {
+    // Clear the pending switch if the section changes again quickly —
+    // stacked timeouts caused rapid-fire animation swaps (twitching).
+    const timeout = setTimeout(() => {
       setCharacterAnimation(
         section === 0 ? "Typing" : section === 1 ? "WarmingUp" : "StandingIdle"
       );
     }, 600);
+    return () => clearTimeout(timeout);
   }, [section]);
 
   const characterGroup = useRef<GroupProps>(null);

@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { Group, Object3D } from "three";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { GroupProps, useFrame } from "@react-three/fiber";
 
 type GLTFResult = GLTF & {
@@ -58,60 +58,38 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
   standingUp[0].name = "StandingUp";
   standingIdle[0].name = "StandingIdle";
 
-  const typingActions = useAnimations(typingAnimation, group);
-  const boredActions = useAnimations(bored, group);
-  const fallingIdleActions = useAnimations(fallingIdle, group);
-  const warmingUpActions = useAnimations(warmingUp, group);
-  const standingUpActions = useAnimations(standingUp, group);
-  const standingIdleActions = useAnimations(standingIdle, group);
+  // All clips must live in a SINGLE mixer. Creating one useAnimations per
+  // clip creates six mixers that all write to the same bones every frame,
+  // which makes them fight during cross-fades (the "twitching" hands).
+  const animations = useMemo(
+    () => [
+      typingAnimation[0],
+      bored[0],
+      fallingIdle[0],
+      warmingUp[0],
+      standingUp[0],
+      standingIdle[0],
+    ],
+    [typingAnimation, bored, fallingIdle, warmingUp, standingUp, standingIdle]
+  );
+
+  const { actions } = useAnimations(animations, group);
 
   useEffect(() => {
-    let currentActions = typingActions.actions;
-
-    switch (animation) {
-      case "Typing":
-        currentActions = typingActions.actions;
-        break;
-      case "Bored":
-        currentActions = boredActions.actions;
-        break;
-      case "FallingIdle":
-        currentActions = fallingIdleActions.actions;
-        break;
-      case "WarmingUp":
-        currentActions = warmingUpActions.actions;
-        break;
-      case "StandingUp":
-        currentActions = standingUpActions.actions;
-        break;
-      case "StandingIdle":
-        currentActions = standingIdleActions.actions;
-        break;
-      default:
-        // Handle default  case or unknown animations
-        console.warn("Unknown animation:", animation);
-        return;
+    const action = actions[animation];
+    if (!action) {
+      console.warn("Unknown animation:", animation);
+      return;
     }
 
-    if (currentActions && currentActions[animation]) {
-      currentActions[animation]!.reset().fadeIn(0.1).play();
-    }
+    action.reset().fadeIn(0.3).play();
 
-    // Cleanup function to stop the animation when the component unmounts or animation changes
+    // Fade out WITHOUT reset() — resetting rewinds the outgoing clip to
+    // frame 0 while it's still visible, which pops the pose for a frame.
     return () => {
-      if (currentActions && currentActions[animation]) {
-        currentActions[animation]!.reset().fadeOut(0.5);
-      }
+      action.fadeOut(0.3);
     };
-  }, [
-    typingActions.actions,
-    boredActions.actions,
-    fallingIdleActions.actions,
-    animation,
-    warmingUpActions.actions,
-    standingUpActions.actions,
-    standingIdleActions.actions,
-  ]);
+  }, [actions, animation]);
 
   useEffect(() => {
     Object.values(materials).forEach((material) => {
