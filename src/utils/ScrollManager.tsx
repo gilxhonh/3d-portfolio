@@ -21,13 +21,44 @@ const ScrollManager: React.FC<ScrollManagerProps> = ({
   const lastScroll = useRef(0);
   const isAnimating = useRef(false);
   const idleFrames = useRef(0);
+  const isTouching = useRef(false);
+  const touchCooldown = useRef(0);
 
   data.fill.classList.add("top-0", "absolute");
 
+  // Track touch state so we never animate scrollTop while the user's finger
+  // is on the screen (GSAP fighting native touch scroll causes flickering).
   useEffect(() => {
+    const el = data.el;
+    const onTouchStart = () => {
+      isTouching.current = true;
+      // Kill any in-flight tween immediately so it stops fighting the finger.
+      gsap.killTweensOf(el);
+      isAnimating.current = false;
+    };
+    const onTouchEnd = () => {
+      isTouching.current = false;
+      // Let momentum scrolling settle before we're allowed to snap again.
+      touchCooldown.current = 30;
+    };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchend", onTouchEnd, { passive: true });
+    el.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, [data.el]);
+
+  useEffect(() => {
+    // Don't start a programmatic scroll while the user is actively touching;
+    // the idle-snap below will align the section once they let go.
+    if (isTouching.current) return;
     gsap.to(data.el, {
       duration: 1,
       scrollTop: section * data.el.clientHeight,
+      overwrite: true,
       onStart: () => {
         isAnimating.current = true;
       },
@@ -35,10 +66,20 @@ const ScrollManager: React.FC<ScrollManagerProps> = ({
         isAnimating.current = false;
       },
     });
-  }, [section, data.el.clientHeight]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [section]);
 
   useFrame(() => {
     if (isAnimating.current) {
+      lastScroll.current = data.scroll.current;
+      idleFrames.current = 0;
+      return;
+    }
+
+    // While the finger is down (or momentum is still settling), just track
+    // the scroll position — never snap or change sections mid-gesture.
+    if (isTouching.current || touchCooldown.current > 0) {
+      if (!isTouching.current) touchCooldown.current--;
       lastScroll.current = data.scroll.current;
       idleFrames.current = 0;
       return;
@@ -59,6 +100,7 @@ const ScrollManager: React.FC<ScrollManagerProps> = ({
           gsap.to(data.el, {
             duration: 0.6,
             scrollTop: nearest * data.el.clientHeight,
+            overwrite: true,
             onStart: () => {
               isAnimating.current = true;
             },
@@ -70,17 +112,21 @@ const ScrollManager: React.FC<ScrollManagerProps> = ({
       }
     } else {
       idleFrames.current = 0;
+
+      // Keep the section state in sync while scrolling, but without
+      // triggering a snap animation (the effect above skips it mid-touch,
+      // and this only fires here on non-touch input like mouse wheel).
+      const curSection = Math.floor(data.scroll.current * data.pages);
+      if (data.scroll.current > lastScroll.current && curSection === 0) {
+        onSectionChange(1);
+      } else if (
+        data.scroll.current < lastScroll.current &&
+        data.scroll.current < 1 / (data.pages - 1)
+      ) {
+        onSectionChange(0);
+      }
     }
 
-    const curSection = Math.floor(data.scroll.current * data.pages);
-    if (data.scroll.current > lastScroll.current && curSection === 0) {
-      onSectionChange(1);
-    } else if (
-      data.scroll.current < lastScroll.current &&
-      data.scroll.current < 1 / (data.pages - 1)
-    ) {
-      onSectionChange(0);
-    }
     lastScroll.current = data.scroll.current;
   });
 

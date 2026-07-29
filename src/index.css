@@ -7,6 +7,19 @@
     height: 100vh;
 }
 
+/* On mobile, 100vh includes the browser UI bars, which makes sections
+   taller than the visible screen and causes jumpy/misaligned scrolling.
+   dvh tracks the actual visible viewport. */
+@supports (height: 100dvh) {
+    #root {
+        height: 100dvh;
+    }
+
+    .h-screen {
+        height: 100dvh;
+    }
+}
+
 body {
     margin: 0;
 }
