@@ -22,30 +22,37 @@ const ScrollManager: React.FC<ScrollManagerProps> = ({
   const isAnimating = useRef(false);
   const idleFrames = useRef(0);
   const isTouching = useRef(false);
-  const touchCooldown = useRef(0);
+  const lastTouchTime = useRef(0);
+  const direction = useRef(0); // -1 = scrolling up, 1 = scrolling down
 
   data.fill.classList.add("top-0", "absolute");
 
   // Track touch state so we never animate scrollTop while the user's finger
-  // is on the screen (GSAP fighting native touch scroll causes flickering).
+  // is on the screen or native momentum scrolling is still running (GSAP
+  // fighting the browser over scrollTop is what causes flickering).
   useEffect(() => {
     const el = data.el;
     const onTouchStart = () => {
       isTouching.current = true;
+      lastTouchTime.current = performance.now();
       // Kill any in-flight tween immediately so it stops fighting the finger.
       gsap.killTweensOf(el);
       isAnimating.current = false;
     };
+    const onTouchMove = () => {
+      lastTouchTime.current = performance.now();
+    };
     const onTouchEnd = () => {
       isTouching.current = false;
-      // Let momentum scrolling settle before we're allowed to snap again.
-      touchCooldown.current = 30;
+      lastTouchTime.current = performance.now();
     };
     el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: true });
     el.addEventListener("touchend", onTouchEnd, { passive: true });
     el.addEventListener("touchcancel", onTouchEnd, { passive: true });
     return () => {
       el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
       el.removeEventListener("touchend", onTouchEnd);
       el.removeEventListener("touchcancel", onTouchEnd);
     };
@@ -76,54 +83,74 @@ const ScrollManager: React.FC<ScrollManagerProps> = ({
       return;
     }
 
-    // While the finger is down (or momentum is still settling), just track
-    // the scroll position — never snap or change sections mid-gesture.
-    if (isTouching.current || touchCooldown.current > 0) {
-      if (!isTouching.current) touchCooldown.current--;
+    const rawDelta = data.scroll.current - lastScroll.current;
+    const delta = Math.abs(rawDelta);
+    if (delta > 0.0001) {
+      direction.current = rawDelta > 0 ? 1 : -1;
+    }
+
+    // While the finger is down, just track the position — never snap or
+    // change sections mid-gesture.
+    if (isTouching.current) {
       lastScroll.current = data.scroll.current;
       idleFrames.current = 0;
       return;
     }
 
-    const delta = Math.abs(data.scroll.current - lastScroll.current);
+    const sinceTouch = performance.now() - lastTouchTime.current;
     const pageFloat = data.scroll.current * (data.pages - 1);
-    const nearest = Math.min(data.pages - 1, Math.max(0, Math.round(pageFloat)));
 
-    // Snap to the nearest section once scrolling comes to rest, so every
-    // section (including Projects) always settles perfectly aligned.
+    // Snap once scrolling has fully come to rest (this also waits out native
+    // touch momentum, since momentum keeps delta above the threshold).
+    // The target is direction-biased: after scrolling up you only need to be
+    // past 30% of the way back for it to settle on the previous section, and
+    // vice versa — so a swipe that lands mid-way continues in the direction
+    // you were going instead of bouncing back.
     if (delta < 0.00002) {
       idleFrames.current++;
-      if (idleFrames.current === 15 && Math.abs(pageFloat - nearest) > 0.004) {
-        if (nearest !== section) {
-          onSectionChange(nearest);
-        } else {
-          gsap.to(data.el, {
-            duration: 0.6,
-            scrollTop: nearest * data.el.clientHeight,
-            overwrite: true,
-            onStart: () => {
-              isAnimating.current = true;
-            },
-            onComplete: () => {
-              isAnimating.current = false;
-            },
-          });
+      if (idleFrames.current === 15) {
+        const base = Math.floor(pageFloat);
+        const frac = pageFloat - base;
+        const threshold = direction.current < 0 ? 0.7 : 0.3;
+        const target = Math.min(
+          data.pages - 1,
+          Math.max(0, frac >= threshold ? base + 1 : base)
+        );
+        if (Math.abs(pageFloat - target) > 0.004) {
+          if (target !== section) {
+            onSectionChange(target);
+          } else {
+            gsap.to(data.el, {
+              duration: 0.6,
+              scrollTop: target * data.el.clientHeight,
+              overwrite: true,
+              onStart: () => {
+                isAnimating.current = true;
+              },
+              onComplete: () => {
+                isAnimating.current = false;
+              },
+            });
+          }
         }
       }
     } else {
       idleFrames.current = 0;
 
-      // Keep the section state in sync while scrolling, but without
-      // triggering a snap animation (the effect above skips it mid-touch,
-      // and this only fires here on non-touch input like mouse wheel).
-      const curSection = Math.floor(data.scroll.current * data.pages);
-      if (data.scroll.current > lastScroll.current && curSection === 0) {
-        onSectionChange(1);
-      } else if (
-        data.scroll.current < lastScroll.current &&
-        data.scroll.current < 1 / (data.pages - 1)
-      ) {
-        onSectionChange(0);
+      // Wheel-only convenience: a scroll tick on the hero advances a full
+      // page (and scrolling back near the top returns to it). Never run this
+      // right after touch input — starting a tween while native momentum is
+      // still writing scrollTop makes the two fight and flicker.
+      if (sinceTouch > 1500) {
+        const curSection = Math.floor(data.scroll.current * data.pages);
+        if (rawDelta > 0 && curSection === 0) {
+          onSectionChange(1);
+        } else if (
+          rawDelta < 0 &&
+          data.scroll.current < 1 / (data.pages - 1)
+        ) {
+          onSectionChange(0);
+        }
       }
     }
 
